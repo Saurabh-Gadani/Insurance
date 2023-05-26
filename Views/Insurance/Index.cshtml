@@ -1,0 +1,84 @@
+﻿@using MVCWebApplication.Models.Insurance
+@model InsurancePageVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("SearchInsurance", "Insurance", FormMethod.Post))
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-borderless">
+            <tr>
+                <td>Claim Number</td>
+                <td>@Html.TextBoxFor(x=>x.InsuranceFilter.ClaimNumber)</td>
+            </tr>
+            <tr>
+                <td>Line Number</td>
+                <td>@Html.TextBoxFor(x=>x.InsuranceFilter.LineNumber)</td>
+            </tr>
+            <tr>
+                <td>Duplicate Parameters</td>
+                <td>
+                    @for (int i = 0; i < Model.InsuranceFilter.DuplicateParams.Count; i++)
+                    {
+                        @Html.CheckBoxFor(m => m.InsuranceFilter.DuplicateParams[i].Selected)
+                        @Html.HiddenFor(m => m.InsuranceFilter.DuplicateParams[i].Key)
+                        @Html.HiddenFor(m => m.InsuranceFilter.DuplicateParams[i].Value)
+                        @Html.LabelFor(m => m.InsuranceFilter.DuplicateParams[i].Selected,Model.InsuranceFilter.DuplicateParams[i].Value)
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Matching Count</td>
+                <td>@Html.TextBoxFor(x=>x.InsuranceFilter.MatchingCount)</td>
+            </tr>
+        </table>
+        <input type="submit" value="Search" />
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Claim Number</th>
+                <th>Line Number</th>
+                <th>Provider</th>
+                <th>Procedure Code</th>
+                <th>Net Amount</th>
+                <th>Received On</th>
+                <th>Matching Crietaria</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.InsuranceDetails)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClaimNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LineNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Provider)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProcedureCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NetAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClaimReceivedOn)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Matching)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
